@@ -1,5 +1,5 @@
 {
-  "remote": "PUT SHARED REPO LINK WITH FRIENDS HERE",
+  "remote": "PUT_SHARED_REPO_LINK_WITH_FRIENDS_HERE",
   "server_dir": "server/PUT_YOUR_SERVER_FOLDER_NAME_HERE",
   "server_jar": "server.jar",
   "java_args": "-Xms2G -Xmx2G"

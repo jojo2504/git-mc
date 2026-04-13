@@ -10,6 +10,9 @@ server/**/*
 !server/**/world_nether/**/*
 !server/**/world_the_end/**/*
 
+# Ignore config
+server/**/config/*
+
 # Whitelist startup scripts and basic repository files in the root
 !/start.sh
 !/start.cmd
