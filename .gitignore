@@ -1,0 +1,20 @@
+# Ignore all files within the server directory hierarchy
+server/**/*
+
+# Unignore all directories within the server hierarchy so Git can actually traverse them
+# (If Git ignores a directory, it will never look inside it for unignored files)
+!server/**/
+
+# Explicitly unignore the contents of the world directories
+!server/**/world/**/*
+!server/**/world_nether/**/*
+!server/**/world_the_end/**/*
+
+# Whitelist startup scripts and basic repository files in the root
+!/start.sh
+!/start.cmd
+!/.gitignore
+!/README.md
+!/settings.json
+
+server/test-server-name
