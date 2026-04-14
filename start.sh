@@ -8,7 +8,6 @@ if ! command -v python3 &> /dev/null; then
 fi
 
 # Extract settings from settings.json
-REMOTE=$(python3 -c "import sys, json; print(json.load(open('settings.json')).get('remote', ''))")
 SERVER_DIR=$(python3 -c "import sys, json; print(json.load(open('settings.json')).get('server_dir', 'server'))")
 
 # Optional fallbacks in case the server pack lacks a start script
@@ -17,24 +16,10 @@ JAVA_ARGS=$(python3 -c "import sys, json; print(json.load(open('settings.json'))
 BRANCH="main"
 
 echo "--- Configuration Loaded ---"
-echo "Remote: $REMOTE"
 echo "Server Dir: $SERVER_DIR"
 
-# Ensure Git remote is configured correctly
-if ! git remote | grep -q "^origin$"; then
-    if [ "$REMOTE" != "PUT SHARED REPO LINK WITH FRIENDS HERE" ] && [ -n "$REMOTE" ]; then
-        git remote add origin "$REMOTE"
-        git branch -M $BRANCH
-    else
-        echo "Warning: Please set your Git 'remote' URL in settings.json!"
-    fi
-fi
-
 echo "--- Pulling latest world data from Git ---"
-# Only pull if a remote is properly set up
-if git remote | grep -q "^origin$"; then
-    git pull origin $BRANCH
-fi
+git pull origin $BRANCH
 
 echo "--- Starting Minecraft Server ---"
 # Navigate into the server directory
@@ -48,13 +33,13 @@ fi
 # Run the server pack's native start script
 if [ -f "start.sh" ]; then
     chmod +x start.sh
-    ./start.sh
+    ./start.sh || java $JAVA_ARGS -jar $SERVER_JAR nogui
 elif [ -f "run.sh" ]; then
     chmod +x run.sh
-    ./run.sh
+    ./run.sh || java $JAVA_ARGS -jar $SERVER_JAR nogui
 elif [ -f "start.cmd" ]; then
     # Fallback for WSL or mixed environments
-    cmd.exe /c start.cmd
+    cmd.exe /c start.cmd || java $JAVA_ARGS -jar $SERVER_JAR nogui
 else
     echo "No start.sh or start.cmd found in $SERVER_DIR. Using raw Java arguments from settings..."
     java $JAVA_ARGS -jar $SERVER_JAR nogui
@@ -70,12 +55,8 @@ git add .
 # Check if there are actually changes to commit
 if ! git diff --cached --quiet; then
     git commit -m "Auto-save world: $(date +'%Y-%m-%d %H:%M:%S')"
-    if git remote | grep -q "^origin$"; then
-        git push -u origin $BRANCH
-        echo "--- World data pushed successfully ---"
-    else
-        echo "--- Changes committed locally, but no remote configured to push to! ---"
-    fi
+    git push origin $BRANCH
+    echo "--- World data pushed successfully ---"
 else
     echo "--- No changes to push ---"
 fi

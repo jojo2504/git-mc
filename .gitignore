@@ -4,6 +4,7 @@ server/**/*
 # Unignore all directories within the server hierarchy so Git can actually traverse them
 # (If Git ignores a directory, it will never look inside it for unignored files)
 !server/**/
+server/test-server-name
 
 # Explicitly unignore the contents of the world directories
 !server/**/world/**/*
@@ -19,5 +20,3 @@ server/**/config/*
 !/.gitignore
 !/README.md
 !/settings.json
-
-server/test-server-name
