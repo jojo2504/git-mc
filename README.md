@@ -16,6 +16,8 @@ A Minecraft server wrapper for pulling and pushing a world automatically at the 
 6. Commit: `git commit -m "Initial commit"`
 7. Push: `git push -u origin main`
 
+8. Or just use the repo template
+
 ## For future friends who wants to host after you
 1. Clone your private shared repository: `git clone <your-repo-url>`
 2. Put your server files (server files + modpack) in `git-mc/server/`, (i.e. `git-mc/server/myserver`)
